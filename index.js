@@ -7,6 +7,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 
+
+
 //myRegestrationDB
 mongoose.connect("mongodb://localhost:27017/myRegestrationDB", { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
@@ -16,6 +18,8 @@ mongoose.connect("mongodb://localhost:27017/myRegestrationDB", { useNewUrlParser
         console.error('Error connecting to DB', err);
     });
 
+
+//User registration Schema
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
@@ -25,9 +29,12 @@ const userSchema = new mongoose.Schema({
 
 const User = new mongoose.model("User", userSchema)
 
+//Http methoads
 app.get("/", (req, res) => {
     res.send("Hii ")
 })
+
+
 
 app.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
@@ -49,13 +56,15 @@ app.post("/register", async (req, res) => {
     }
   });
   
+
+
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
       const user = await User.findOne({ email: email });
       if (user) {
         if (user.password === password) {
-          res.send({ message: "Login successfully" });
+          res.send({ message: "Login successfully", user:user});
         } else {
           res.send({ message: "Invalid password" });
         }
@@ -67,7 +76,33 @@ app.post("/register", async (req, res) => {
     }
   });
 
+  app.put("/update/:id", async (req, res) => {
+    const { name, password,email } = req.body.values;
+    // console.log(req.body.values.name)
+    try {
+      const user = await User.findByIdAndUpdate(req.params.id, {
+        name,
+        password,
+        email
+      }, { new: true });
+      console.log(user.name,"newUser")
+      if (user) {
+        user.name = name||user.name
+        user.email =email||user.email
+        user.password = password||user.password
+       const newUswer= await user.save();
+    
+        res.send({ message: "User updated successfully", newUswer: newUswer });
+      } else {
+        res.send({ message: "User not found" });
+      }
+    } catch (error) {
+      res.send(error);
+    }
+  });
+  
 app.listen(9002, () => {
     console.log("BE started at port 9002")
 })
 
+//1) 
