@@ -7,10 +7,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 
-
+const url="mongodb+srv://surajchavan1532:LFzND8RMnbuMozjJ@cluster0.jeuhijb.mongodb.net/nodeJSEsayWay?retryWrites=true&w=majority"
 
 //myRegestrationDB
-mongoose.connect("mongodb+srv://surajchavan1532:LFzND8RMnbuMozjJ@cluster0.jeuhijb.mongodb.net/nodeJSEsayWay?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to DB!');
     })
