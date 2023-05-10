@@ -10,7 +10,7 @@ app.use(cors())
 
 
 //myRegestrationDB
-mongoose.connect("mongodb://localhost:27017/myRegestrationDB", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb+srv://surajchavan1532:LFzND8RMnbuMozjJ@cluster0.jeuhijb.mongodb.net/nodeJSEsayWay?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to DB!');
     })
